@@ -32,19 +32,16 @@ svg {
 }
 
 button {
-	border: 0.03125rem solid currentColor;
-	border-radius: var(--radius-1);
-	background: transparent;
-	display: flex;
-	align-items: center;
-	padding: 0.5rem 0.75rem;
+	background-color: var(--bar-canvas);
 
 	&:disabled {
-		color: color-mix(in lab, currentColor, transparent 80%);
+		color: color-mix(in lab, var(--bar-ink), transparent 80%);
+		border-color: currentColor;
 	}
 }
 
 .pagination {
+	grid-row: 5;
 	position: sticky;
 	bottom: 0;
 	block-size: 100%;

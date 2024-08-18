@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import type {Movie} from "@/types.ts";
 import {defineProps, computed} from "vue";
+import Stars from "@/components/Stars.vue";
 
 let {movie} = defineProps<{
 	movie: Movie;
@@ -22,7 +23,7 @@ let duration = computed(() =>
 		<img v-if="movie.posterUrl" :src="movie.posterUrl" class="poster" />
 		<div v-else class="no-poster">no image found</div>
 		<div class="content">
-			<h3 class="title">{{ movie.title }}</h3>
+			<h2 class="title">{{ movie.title }}</h2>
 			<p class="summary">{{ movie.summary }}</p>
 			<dl class="details">
 				<dt>Directed by:</dt>
@@ -36,9 +37,9 @@ let duration = computed(() =>
 				<dt>Rated:</dt>
 				<dd>{{ movie.rating }}</dd>
 				<dt>Rating:</dt>
-				<dd>{{ movie.ratingValue }}</dd>
+				<dd><Stars :rating-value="movie.ratingValue" /></dd>
 			</dl>
-			<div class="genres">{{ movie.genres }}</div>
+			<slot name="genres" />
 		</div>
 	</div>
 </template>

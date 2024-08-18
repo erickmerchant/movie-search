@@ -1,7 +1,11 @@
 @import "open-props/style";
 @import "open-props/normalize";
 @import "open-props/stone";
+@import "open-props/indigo";
+@import "open-props/yellow";
 @import "open-props/animations";
+@import "open-props/buttons";
+@import "open-props/sizes";
 
 html,
 body {
@@ -20,7 +24,7 @@ body {
 
 #app {
 	display: grid;
-	grid-template-rows: min-content auto min-content;
+	grid-template-rows: min-content min-content auto auto min-content;
 	gap: 1rem;
 	min-block-size: 100%;
 }
