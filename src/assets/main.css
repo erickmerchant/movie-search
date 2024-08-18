@@ -1,8 +1,26 @@
 @import "open-props/style";
 @import "open-props/normalize";
 @import "open-props/stone";
+@import "open-props/animations";
 
 html,
 body {
+	block-size: 100%;
 	font-family: var(--font-geometric-humanist);
+	color-scheme: light dark;
+	scrollbar-gutter: stable;
+	background: var(--main-canvas);
+	color: var(--main-ink);
+
+	--main-canvas: light-dark(var(--stone-1), var(--stone-10));
+	--main-ink: light-dark(var(--stone-11), var(--stone-0));
+	--bar-canvas: light-dark(var(--stone-11), var(--stone-12));
+	--bar-ink: var(--stone-0);
+}
+
+#app {
+	display: grid;
+	grid-template-rows: min-content auto min-content;
+	gap: 1rem;
+	min-block-size: 100%;
 }

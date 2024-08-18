@@ -19,7 +19,8 @@ let duration = computed(() =>
 
 <template>
 	<div class="card">
-		<img :src="movie.posterUrl" class="poster" />
+		<img v-if="movie.posterUrl" :src="movie.posterUrl" class="poster" />
+		<div v-else class="no-poster">no image found</div>
 		<div class="content">
 			<h3 class="title">{{ movie.title }}</h3>
 			<p class="summary">{{ movie.summary }}</p>
@@ -46,13 +47,34 @@ let duration = computed(() =>
 .card {
 	display: grid;
 	grid-template-columns: 3fr 5fr;
-	gap: 2rem;
-	padding: 0 2rem;
+	gap: 1rem;
+	padding: 0 1rem;
+
+	@media (width < 50rem) {
+		grid-template-columns: 100%;
+		grid-template-rows: min-content auto;
+	}
 }
 
 .poster {
 	grid-column: 1;
 	border-radius: var(--radius-1);
+	min-inline-size: 100%;
+}
+
+.no-poster {
+	z-index: 0;
+	container-type: inline-size;
+	grid-column: 1;
+	border-radius: var(--radius-1);
+	inline-size: 100%;
+	aspect-ratio: 3 / 5;
+	display: grid;
+	place-content: center;
+	background: light-dark(var(--stone-5), var(--stone-7));
+	color: var(--stone-0);
+	font-size: 3cqmin;
+	white-space: nowrap;
 }
 
 .content {
@@ -74,5 +96,10 @@ let duration = computed(() =>
 	display: grid;
 	grid-template-columns: max-content auto;
 	gap: 0.5rem;
+	align-content: start;
+
+	> * {
+		margin: 0;
+	}
 }
 </style>

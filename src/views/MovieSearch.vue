@@ -5,6 +5,7 @@ import gql from "graphql-tag";
 import {ref, reactive, watch} from "vue";
 import MovieCard from "@/components/MovieCard.vue";
 import Pager from "@/components/Pager.vue";
+import {Loading} from "@element-plus/icons-vue";
 
 const search = ref("");
 const currentPage = ref(1);
@@ -86,35 +87,42 @@ function next() {
 </script>
 
 <template>
-	<div class="app">
-		<div class="search">
-			<input v-model="search" placeholder="Search by title" />
+	<div class="search">
+		<input v-model="search" placeholder="Search by title" />
+		<div v-if="moviesLoading" class="loading">
+			<Loading />
 		</div>
-		<MovieCard v-for="movie in moviesList" :movie="movie" :key="movie.id" />
-		<Pager
-			:totalPages="totalPages"
-			:currentPage="currentPage"
-			@previous="previous"
-			@next="next" />
 	</div>
+	<MovieCard v-for="movie in moviesList" :movie="movie" :key="movie.id" />
+	<Pager
+		:totalPages="totalPages"
+		:currentPage="currentPage"
+		@previous="previous"
+		@next="next" />
 </template>
 
 <style scoped>
-.app {
-	display: grid;
-	gap: 1rem;
+.loading {
+	animation: var(--animation-spin) forwards;
 }
 
 .search {
+	display: grid;
+	grid-template-columns: auto 2em;
+	gap: 1em;
 	position: sticky;
+	z-index: 1;
 	top: 0;
-	padding: 1rem 2rem;
-	background-color: var(--stone-8);
+	padding: 1rem;
+	background-color: var(--bar-canvas);
+	color: var(--bar-ink);
 
 	:where(input) {
 		display: block;
 		padding: 0.25rem 0.5rem;
 		inline-size: 100%;
+		border: 0.03125rem solid currentColor;
+		color: var(--main-ink);
 	}
 }
 </style>
