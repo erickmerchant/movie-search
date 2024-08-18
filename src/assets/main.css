@@ -1,0 +1,8 @@
+@import "open-props/style";
+@import "open-props/normalize";
+@import "open-props/stone";
+
+html,
+body {
+	font-family: var(--font-geometric-humanist);
+}

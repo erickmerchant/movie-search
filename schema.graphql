@@ -1,0 +1,67 @@
+input PaginationInput {
+  page: Int
+  perPage: Int
+}
+
+type Pagination {
+  page: Int!
+  perPage: Int!
+  totalPages: Int!
+}
+
+type Genre {
+  id: ID
+  title: String
+  movies: [Movie]
+}
+
+type GenreWithoutMovies {
+  id: ID
+  title: String
+}
+
+type GenreConnection {
+  nodes: [Genre!]
+  pagination: Pagination
+}
+
+type Query {
+  """Single Genre by ID"""
+  genre(id: ID!): Genre
+
+  """Paginated list of Genres"""
+  genres(pagination: PaginationInput): GenreConnection
+
+  """Single Movie by ID"""
+  movie(id: ID!): Movie
+
+  """Paginated list of Movies with simple search"""
+  movies(pagination: PaginationInput, where: MovieFilterInput): MovieConnection
+}
+
+type Movie {
+  id: ID
+  title: String
+  posterUrl: String
+  summary: String
+  duration: String
+  directors: [String]
+  mainActors: [String]
+  datePublished: String
+  rating: String
+  ratingValue: Float
+  bestRating: Float
+  worstRating: Float
+  writers: [String]
+  genres: [GenreWithoutMovies]
+}
+
+type MovieConnection {
+  nodes: [Movie!]
+  pagination: Pagination
+}
+
+input MovieFilterInput {
+  search: String
+  genre: String
+}
