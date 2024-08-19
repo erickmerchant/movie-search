@@ -16,6 +16,12 @@ let duration = computed(() =>
 		.substring(2)
 		.replace(/([a-z]+)/, "$1 ")
 );
+let genres = computed(() =>
+	movie?.genres
+		?.filter((g) => g != null)
+		?.map((g) => g?.title)
+		.join(", ")
+);
 </script>
 
 <template>
@@ -42,8 +48,8 @@ let duration = computed(() =>
 				<dd>{{ movie.rating }}</dd>
 				<dt>Rating:</dt>
 				<dd><Stars :rating-value="movie.ratingValue" /></dd>
-				<dt>Genre:</dt>
-				<dd><slot name="genres" /></dd>
+				<dt>Genres:</dt>
+				<dd>{{ genres }}</dd>
 			</dl>
 		</div>
 	</div>

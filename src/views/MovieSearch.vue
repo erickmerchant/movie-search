@@ -102,7 +102,13 @@ watch(genresResult, (newGenres: Query | undefined) => {
 
 function selectGenre(title: string | null) {
 	genre.value = genre.value === title ? null : title;
+
+	currentPage.value = 1;
 }
+
+watch(search, () => {
+	currentPage.value = 1;
+});
 </script>
 
 <template>
@@ -129,14 +135,6 @@ function selectGenre(title: string | null) {
 				@genre="selectGenre"
 				:movie="movie"
 				:key="movie.id ?? `movie-${i}`">
-				<template #genres v-if="movie?.genres != null">
-					<GenreFilters
-						:genres="movie.genres as Array<Genre>"
-						:selected-genre="genre"
-						@genre="selectGenre">
-						<strong>Genres:</strong>
-					</GenreFilters>
-				</template>
 			</MovieCard>
 			<div v-else class="no-results">No results found</div>
 		</div>
