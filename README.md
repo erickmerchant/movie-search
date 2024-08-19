@@ -23,3 +23,5 @@ Given more time here are some things I'd like to improve or change.
 - Make a better placeholder for when there isn't a poster.
 - Try to get the bundle size down
 - And last but not least, look at accessibility. I did the bare minimum, but there are probably established patterns, for say pagination, that I could be using.
+- Have the API endpoint be an env var.
+- Use a Vite hook to dynamically change the hard-coded `href` in the `rel="preconnect"`.
