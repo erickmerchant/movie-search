@@ -1,15 +1,15 @@
 <script setup lang="ts">
-import type {Query, Movie, Genre, QueryMoviesArgs} from "@/types.ts";
+import type {Query, Movie, Genre} from "@/types.ts";
 import {useQuery} from "@vue/apollo-composable";
 import gql from "graphql-tag";
 import {ref, reactive, watch} from "vue";
 import MovieCard from "@/components/MovieCard.vue";
-import Pager from "@/components/Pager.vue";
+import Pagination from "@/components/Pagination.vue";
 import GenreFilters from "@/components/GenreFilters.vue";
 import {Loading} from "@element-plus/icons-vue";
 
 const search = ref("");
-const genre = ref<string | undefined>(undefined);
+const genre = ref<string | null>(null);
 const currentPage = ref(1);
 const movieVariables = reactive({
 	pagination: {page: currentPage, perPage: 20},
@@ -49,7 +49,7 @@ const {result: movieResult, loading: moviesLoading} = useQuery(
 	movieVariables
 );
 
-const {result: genreResult} = useQuery(gql`
+const {result: genresResult, loading: genresLoading} = useQuery(gql`
 	query AllGenres {
 		genres {
 			nodes {
@@ -89,7 +89,8 @@ function next() {
 }
 
 const genreList = ref<Array<Genre>>([]);
-watch(genreResult, (newGenres: Query | undefined) => {
+
+watch(genresResult, (newGenres: Query | undefined) => {
 	if (newGenres?.genres != undefined) {
 		const genres = newGenres.genres;
 
@@ -99,48 +100,52 @@ watch(genreResult, (newGenres: Query | undefined) => {
 	}
 });
 
-function selectGenre(title: string) {
-	genre.value = genre.value === title ? undefined : title;
+function selectGenre(title: string | null) {
+	genre.value = genre.value === title ? null : title;
 }
 </script>
 
 <template>
 	<div class="search">
-		<h1>Movie Search</h1>
+		<h1>📽️ Movie Search</h1>
 		<input v-model="search" placeholder="Search by title" />
 		<div v-if="moviesLoading" class="loading">
 			<Loading />
 		</div>
 	</div>
-	<GenreFilters
-		@genre="selectGenre"
-		:genres="genreList"
-		:selected-genre="genre">
-		<strong>Filter by genre:</strong>
-	</GenreFilters>
-	<div class="results">
-		<MovieCard
-			v-if="moviesList.length"
-			v-for="movie in moviesList"
-			@genre="selectGenre"
-			:movie="movie"
-			:key="movie.id">
-			<template #genres>
-				<GenreFilters
-					:genres="movie.genres"
-					@genre="selectGenre"
-					:selected-genre="genre">
-					<strong>Genres:</strong>
-				</GenreFilters>
-			</template>
-		</MovieCard>
-		<div v-else class="no-results">No results found</div>
-	</div>
-	<Pager
-		:totalPages="totalPages"
-		:currentPage="currentPage"
-		@previous="previous"
-		@next="next" />
+	<template v-if="!genresLoading">
+		<details class="genre-filters-wrapper">
+			<summary>Filter by genre</summary>
+			<GenreFilters
+				@genre="selectGenre"
+				:genres="genreList"
+				:selected-genre="genre">
+			</GenreFilters>
+		</details>
+		<div class="results">
+			<MovieCard
+				v-if="moviesList.length"
+				v-for="(movie, i) in moviesList"
+				@genre="selectGenre"
+				:movie="movie"
+				:key="movie.id ?? `movie-${i}`">
+				<template #genres v-if="movie?.genres != null">
+					<GenreFilters
+						:genres="movie.genres as Array<Genre>"
+						:selected-genre="genre"
+						@genre="selectGenre">
+						<strong>Genres:</strong>
+					</GenreFilters>
+				</template>
+			</MovieCard>
+			<div v-else class="no-results">No results found</div>
+		</div>
+		<Pagination
+			:totalPages="totalPages"
+			:currentPage="currentPage"
+			@previous="previous"
+			@next="next" />
+	</template>
 </template>
 
 <style scoped>
@@ -173,8 +178,8 @@ function selectGenre(title: string) {
 	}
 }
 
-.genre-filters {
-	padding: 0 1rem;
+.genre-filters-wrapper {
+	margin: 0 1rem;
 }
 
 .results {

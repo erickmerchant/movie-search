@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import {defineProps, defineEmits} from "vue";
 import {ArrowLeftBold, ArrowRightBold} from "@element-plus/icons-vue";
 
 const emit = defineEmits<{
@@ -15,11 +14,17 @@ defineProps<{
 
 <template>
 	<div class="pagination" v-if="totalPages">
-		<button :disabled="currentPage <= 1" @click="emit('previous')">
+		<button
+			:disabled="currentPage <= 1"
+			@click="emit('previous')"
+			aria-label="Previous">
 			<ArrowLeftBold />
 		</button>
 		<div>Page {{ currentPage }} / {{ totalPages }}</div>
-		<button :disabled="currentPage >= totalPages" @click="emit('next')">
+		<button
+			:disabled="currentPage >= totalPages"
+			@click="emit('next')"
+			aria-label="Next">
 			<ArrowRightBold />
 		</button>
 	</div>
@@ -43,7 +48,7 @@ button {
 .pagination {
 	grid-row: 5;
 	position: sticky;
-	bottom: 0;
+	bottom: -1px; /* hack: fixes a bug where it's not at the absolute bottom */
 	block-size: 100%;
 	display: flex;
 	align-items: center;

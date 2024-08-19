@@ -1,39 +1,25 @@
 # movie-search
 
-This template should help get you started developing with Vue 3 in Vite.
+I used Vue + Vite for my implementation along with Apollo for working with graphql. Some things that I think are interesting.
 
-## Recommended IDE Setup
+- I used Apollo's codegen to make TypeScript types from the schema.
+- I worked a bit on light/dark mode.
+- I used Open Props for styling and some icons from something called Element Plus
+- Everything should be mobile friendly and work well on desktop as well.
+- I'm particularly proud of the star rating component I made which I think makes it more interesting.
+- Also I like the sticky top bar and pagination at the bottom.
+- Note: The API was not giving me the total results, only the total pages, so I just have next and previous rather than a full pagination.
 
-[VSCode](https://code.visualstudio.com/) + [Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar) (and disable Vetur).
+Given more time here are some things I'd like to improve or change.
 
-## Type Support for `.vue` Imports in TS
-
-TypeScript cannot handle type information for `.vue` imports by default, so we replace the `tsc` CLI with `vue-tsc` for type checking. In editors, we need [Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar) to make the TypeScript language service aware of `.vue` types.
-
-## Customize configuration
-
-See [Vite Configuration Reference](https://vitejs.dev/config/).
-
-## Project Setup
-
-```sh
-npm install
-```
-
-### Compile and Hot-Reload for Development
-
-```sh
-npm run dev
-```
-
-### Type-Check, Compile and Minify for Production
-
-```sh
-npm run build
-```
-
-### Run Unit Tests with [Vitest](https://vitest.dev/)
-
-```sh
-npm run test:unit
-```
+- Lint with ESlint to catch things like using `let` where it could be `const`
+- Clean up some of the TypeScript. I was just adding some things at the end to eliminate errors and given a bit more time it could be cleaner.
+- Add tests
+- Move the genre filters into a dropdown in the sticky top bar.
+- Have the ability to open a poster in a light box type modal
+- Handle errors in an ErrorBoundary type setup.
+- In general I think the handling of the token should be revisited. It works, but if the token was coming from OAuth for instance, how I did it wouldn't make sense.
+- Move some of the computed value things in the card into util functions.
+- Make a better placeholder for when there isn't a poster.
+- Try to get the bundle size down
+- And last but not least, look at accessibility. I did the bare minimum, but there are probably established patterns, for say pagination, that I could be using.

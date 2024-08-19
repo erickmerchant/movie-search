@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import type {Movie} from "@/types.ts";
-import {defineProps, computed} from "vue";
+import {computed} from "vue";
 import Stars from "@/components/Stars.vue";
 
 let {movie} = defineProps<{
@@ -20,8 +20,12 @@ let duration = computed(() =>
 
 <template>
 	<div class="card">
-		<img v-if="movie.posterUrl" :src="movie.posterUrl" class="poster" />
-		<div v-else class="no-poster">no image found</div>
+		<img
+			v-if="movie.posterUrl"
+			:src="movie.posterUrl"
+			class="poster"
+			:alt="`Poster for ${movie.title}`" />
+		<div v-else class="no-poster" aria-hidden="true">no image found</div>
 		<div class="content">
 			<h2 class="title">{{ movie.title }}</h2>
 			<p class="summary">{{ movie.summary }}</p>
@@ -38,8 +42,9 @@ let duration = computed(() =>
 				<dd>{{ movie.rating }}</dd>
 				<dt>Rating:</dt>
 				<dd><Stars :rating-value="movie.ratingValue" /></dd>
+				<dt>Genre:</dt>
+				<dd><slot name="genres" /></dd>
 			</dl>
-			<slot name="genres" />
 		</div>
 	</div>
 </template>
@@ -72,8 +77,8 @@ let duration = computed(() =>
 	aspect-ratio: 3 / 5;
 	display: grid;
 	place-content: center;
-	background: light-dark(var(--stone-5), var(--stone-7));
-	color: var(--stone-0);
+	background: light-dark(var(--stone-0), var(--stone-8));
+	color: light-dark(var(--stone-8), var(--stone-0));
 	font-size: 3cqmin;
 	white-space: nowrap;
 }

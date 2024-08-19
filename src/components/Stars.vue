@@ -1,22 +1,24 @@
 <script setup lang="ts">
-import {defineProps, computed} from "vue";
-import {StarFilled} from "@element-plus/icons-vue";
+import {computed} from "vue";
+import {StarFilled, Star} from "@element-plus/icons-vue";
+import type {Maybe} from "@/types.ts";
 
 let {ratingValue} = defineProps<{
-	ratingValue: number;
+	ratingValue: Maybe<number> | undefined;
 }>();
 
 let ratingValueInt = computed(() => {
-	console.log(ratingValue);
-
-	return Math.round(ratingValue);
+	if (typeof ratingValue === "number") {
+		return Math.round(ratingValue / 2);
+	}
 });
 </script>
 
 <template>
 	<div class="stars">
-		<template v-for="_ in ratingValueInt">
-			<StarFilled />
+		<template v-for="n in 5" v-if="ratingValueInt != undefined">
+			<StarFilled v-if="ratingValueInt >= n" />
+			<Star v-else />
 		</template>
 	</div>
 </template>

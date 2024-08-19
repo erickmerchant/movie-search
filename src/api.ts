@@ -1,14 +1,7 @@
 import {ApolloClient, createHttpLink, InMemoryCache} from "@apollo/client/core";
 import {apiBase} from "@/settings.ts";
 
-let token: string | undefined;
-
-if (token == undefined) {
-	let res = await window.fetch(getUrl("/auth/token"));
-	let json = await res.json();
-
-	token = json.token;
-}
+let authToken: string | undefined;
 
 function getUrl(url: string) {
 	return new URL(url, apiBase);
@@ -18,8 +11,23 @@ function getUrl(url: string) {
 const httpLink = createHttpLink({
 	// You should use an absolute URL here
 	uri: getUrl("/graphql").toString(),
-	headers: {
-		Authorization: `Bearer ${token}`,
+	async fetch(url, options) {
+		if (authToken == undefined) {
+			let res = await window.fetch(getUrl("/auth/token"));
+			let json = await res.json();
+
+			authToken = json.token;
+		}
+
+		let headers = new Headers(options?.headers);
+
+		headers.append("Authorization", `Bearer ${authToken}`);
+
+		options ??= {};
+
+		options.headers = headers;
+
+		return window.fetch(url, options);
 	},
 });
 
